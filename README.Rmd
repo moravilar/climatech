@@ -1,0 +1,62 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# climatech
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of climatech is to make it easy to access and analyze data from
+INTA weather stations, available through the Agricultural Information and
+Management System (SIGA). With climatech you can download and read data from
+any station using its ID, get a summary table of shelter temperature for one
+or more stations, and plot its monthly average. The package also includes
+example data so you can explore its functions without downloading anything.It is
+a practice package developed as part of a university course and is not intended 
+for real-world use.
+
+## Installation
+
+You can install the development version of climatech from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("moravilar/climatech")
+```
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r example}
+library(climatech)
+## basic example code
+```
+
+What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+
+```{r cars}
+summary(cars)
+```
+
+You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
+
+You can also embed plots, for example:
+
+```{r pressure, echo = FALSE}
+plot(pressure)
+```
+
+In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
