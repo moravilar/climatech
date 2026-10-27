@@ -2,7 +2,7 @@
 % Please edit documentation in R/leer_dataset.R
 \name{leer_dataset}
 \alias{leer_dataset}
-\title{leer_dataset}
+\title{Descargar y leer un dataset}
 \usage{
 leer_dataset(
   dataset,

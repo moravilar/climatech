@@ -1,4 +1,4 @@
-#' leer_dataset
+#' Descargar y leer un dataset
 #'
 #' Descarga un archivo CSV desde una URL y lo lee como tabla. Si el archivo
 #' ya existe en `ruta` y no está vacío, no se vuelve a descargar y se lee
