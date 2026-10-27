@@ -2,3 +2,4 @@
 
 export(graf_prom_mensual)
 export(leer_dataset)
+export(tabla_resumen)
