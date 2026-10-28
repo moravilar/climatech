@@ -1,43 +1,43 @@
 #' Descargar y leer un dataset
 #'
 #' Descarga un archivo CSV desde una URL y lo lee como tabla. Si el archivo
-#' ya existe en `ruta` y no está vacío, no se vuelve a descargar y se lee
+#' ya existe en `ruta` y no esta vacio, no se vuelve a descargar y se lee
 #' directamente.
 #'
 #' La URL completa se arma como `url_base` + `dataset` + `".csv"`. Por defecto
-#' apunta al repositorio de datos de la materia, donde están los datos de las
-#' estaciones meteorológicas del INTA, pero se puede indicar cualquier otra
-#' dirección que cumpla ese formato.
+#' apunta al repositorio de datos de la materia, donde estan los datos de las
+#' estaciones meteorologicas del INTA, pero se puede indicar cualquier otra
+#' direccion que cumpla ese formato.
 #'
-#' Antes de leer el archivo, la función revisa su contenido. Si lo descargado
-#' está vacío o es una página web en lugar de un CSV, se detiene con un error
-#' y borra el archivo descargado. Si la tabla leída tiene una sola columna o
+#' Antes de leer el archivo, la funcion revisa su contenido. Si lo descargado
+#' esta vacio o es una pagina web en lugar de un CSV, se detiene con un error
+#' y borra el archivo descargado. Si la tabla leida tiene una sola columna o
 #' no tiene filas de datos, devuelve la tabla igual pero muestra una
 #' advertencia, porque puede tratarse de un archivo con otro formato.
 #'
-#' Si la descarga falla (por ejemplo, sin conexión a internet o con una
-#' dirección que no existe), se muestra el error de R correspondiente. El
-#' mensaje previo de descarga indica qué URL se intentó usar.
+#' Si la descarga falla (por ejemplo, sin conexion a internet o con una
+#' direccion que no existe), se muestra el error de R correspondiente. El
+#' mensaje previo de descarga indica que URL se intento usar.
 #'
 #' @param dataset Texto con el nombre del archivo a descargar, sin la
-#'   extensión `.csv`. Por ejemplo, el id de una estación: `"NH0437"`.
-#' @param ruta Texto con la ruta donde se guardará el archivo, incluyendo su
-#'   nombre y extensión. Por ejemplo: `"datos/NH0437.csv"`. Es obligatorio:
-#'   la función no guarda archivos en ningún lugar que el usuario no indique.
+#'   extension `.csv`. Por ejemplo, el id de una estacion: `"NH0437"`.
+#' @param ruta Texto con la ruta donde se guardara el archivo, incluyendo su
+#'   nombre y extension. Por ejemplo: `"datos/NH0437.csv"`. Es obligatorio:
+#'   la funcion no guarda archivos en ningun lugar que el usuario no indique.
 #'   Si las carpetas no existen, se crean. Si ya existe un archivo en esa ruta,
 #'   se lee ese archivo sin descargar nada, aunque corresponda a otro dataset;
-#'   si existe pero está vacío, se vuelve a descargar.
-#' @param url_base Texto con la dirección de la carpeta donde está el archivo.
+#'   si existe pero esta vacio, se vuelve a descargar.
+#' @param url_base Texto con la direccion de la carpeta donde esta el archivo.
 #'   Debe empezar con `http` y terminar con `/`, y tiene que apuntar al
-#'   contenido crudo del archivo (en GitHub, la dirección del botón "Raw").
+#'   contenido crudo del archivo (en GitHub, la direccion del boton "Raw").
 #'   Por defecto es la carpeta de datos del repositorio de la materia:
 #'   `"https://raw.githubusercontent.com/rse-r/intro-programacion/main/datos/"`.
 #'
-#' @return Un tibble con los datos del archivo.
+#' @return Una tabla con los datos del archivo.
 #'
 #' @examples
 #' \donttest{
-#' # datos de una estación, con la URL por defecto
+#' # datos de una estacion, con la URL por defecto
 #' datos <- leer_dataset("NH0437", ruta = file.path(tempdir(), "NH0437.csv"))
 #' head(datos)
 #' }
@@ -67,22 +67,6 @@ leer_dataset <- function(dataset, ruta, url_base = "https://raw.githubuserconten
       "{.arg url_base} debe empezar con {.val http}.")
   }
 
-  # revisamos que lo descargado sea un csv y no otra cosa
-  primera_linea <- readLines(ruta, n = 1)
-  if (length(primera_linea) == 0) {
-    file.remove(ruta)
-    cli::cli_abort(c(
-      "Lo descargado desde {.url {url}} esta vacio.",
-      "i" = "Revisa que {.arg dataset} y {.arg url_base} sean correctos."
-    ))
-  }
-  if (startsWith(primera_linea, "<")) {
-    file.remove(ruta)
-    cli::cli_abort(c(
-      "Lo descargado no es un CSV, parece una pagina web.",
-      "i" = "Revisa que {.arg url_base} sea la direccion del boton Raw."
-    ))
-  }
 
   if (!file.exists(ruta) || length(readLines(ruta, n = 1)) == 0) {
     url <- paste0(url_base, dataset, ".csv")
@@ -93,7 +77,43 @@ leer_dataset <- function(dataset, ruta, url_base = "https://raw.githubuserconten
     cli::cli_inform("El archivo {.file {ruta}} ya existe, se lee sin descargar.")
   }
 
-  readr::read_csv()(ruta)
+  # revisamos que lo descargado sea un csv y no otra cosa
+  primera_linea <- readLines(ruta, n = 1)
+  if (length(primera_linea) == 0) {
+    file.remove(ruta)
+    cli::cli_abort(c(
+      "Lo descargado desde {.url {url}} esta vacio.",
+      "i" = "Revisa que {.arg dataset} y {.arg url_base} sean correctos."
+    ))
+  }
+  # ponemos < por <!DOCTYPE>
+  if (startsWith(primera_linea, "<")) {
+    file.remove(ruta)
+    cli::cli_abort(c(
+      "Lo descargado no es un CSV, parece una pagina web.",
+      "i" = "Revisa que {.arg url_base} sea la direccion del boton Raw."
+    ))
+  }
+
+  datos <- readr::read_csv(ruta)
+
+  # si la tabla tiene una sola columna, puede que el archivo use otro
+  # separador (por ejemplo ";") o que no sea un CSV
+  if (ncol(datos) == 1) {
+    cli::cli_warn(c(
+      "La tabla leida tiene una sola columna.",
+      "i" = "Puede que el archivo no use comas para separar columnas (por ejemplo, que use {.val ;})."
+    ))
+  }
+  # si no tiene filas, el archivo solo tiene los nombres de las columnas
+  if (nrow(datos) == 0) {
+    cli::cli_warn(c(
+      "La tabla leida no tiene filas de datos, solo los nombres de las columnas.",
+      "i" = "Revisa el contenido de {.file {ruta}}."
+    ))
+  }
+
+  return(datos)
 }
 
 #notaciones para eliminar despues:

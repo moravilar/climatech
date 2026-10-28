@@ -31,17 +31,18 @@
 #'
 #' @examples
 #' # Temperatura de abrigo a 150 cm (variable por defecto)
-#' graf_mensual(NOMBRE_DATASET)
+#' graf_prom_mensual(NOMBRE_DATASET)
 #'
 #' # Cambiando el color de la linea
-#' graf_mensual(NOMBRE_DATASET, colores = "firebrick")
+#' graf_prom_mensual(NOMBRE_DATASET, colores = "firebrick")
 #'
 #' @export
+
 # debido a que en la funcion leer_dataset, quitamos la variable id para que sea
 # una funcion mas "universal", aqui tambien hicimos cambios
 
 
-graf_prom_mensual <- function(datos, variable, colores = "steelblue") {
+graf_prom_mensual <- function(datos, variable = "temperatura_abrigo_150cm", colores = "steelblue") {
 #nota: datos[[variable]] devuelve la columna como un vector
   if (!is.data.frame(datos)) {
     cli::cli_abort("{.arg datos} tiene que ser un data frame.")
@@ -58,7 +59,11 @@ graf_prom_mensual <- function(datos, variable, colores = "steelblue") {
   }
 
   if (!variable %in% names(datos)) {
-    cli::cli_abort("La columna {.field {variable}} no existe en {.arg datos}.")
+    cli::cli_abort(c(
+      "La columna {.field {variable}} no existe en {.arg datos}.",
+      "i" = "Si no indicas {.arg variable}, se usa {.val temperatura_abrigo_150cm}, la temperatura de los datos del paquete.",
+      "i" = "Si usas otros datos, indica la columna en {.arg variable}. Podes ver las columnas con {.code names(datos)}."
+    ))
   }
 
   if (!is.numeric(datos[[variable]])) {
@@ -89,7 +94,7 @@ graf_prom_mensual <- function(datos, variable, colores = "steelblue") {
                   ggplot2::aes(x = mes,
                                y = promedio)) +
     ggplot2::geom_line(color = colores) +
-# con la siguiente linea le indicás que ponga una marca en cada número
+# con la siguiente linea le indicas que ponga una marca en cada numero
 #entero del 1 al 12, o sea, una por mes:
     ggplot2::scale_x_continuous(breaks = 1:12) +
     ggplot2::labs(title = titulo,
@@ -110,5 +115,5 @@ graf_prom_mensual <- function(datos, variable, colores = "steelblue") {
 # trucos que dio claude:
 # datos[[variable]]: toma el valor de variable, que es un character con el
 #nombre de una columna, y devuelve el vector de esa columna dentro de los datos
-#con los que está trabajando la función de dplyr o de ggplot2.
+#con los que esta trabajando la funcion de dplyr o de ggplot2.
 #

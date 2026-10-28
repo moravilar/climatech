@@ -1,14 +1,16 @@
 Package: climatech
-Title: Functions package for weather stations data
+Title: Read, Summarize and Plot Weather Station Data
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: Download and read data from weather stations of the National Institute of 
-            Agricultural Technology (INTA), available in the Agricultural Information 
-            and Management System (SIGA), using each station's identifier. It includes 
-            functions to summarize the shelter temperature of one or more stations and 
-            plot their monthly average. It also provides sample data to explore and test the 
-            package's functions.
+Authors@R: c(
+    person("Mora", "Vilar", , "moravilaraustral@gmail.com", role = c("aut", "cre")),
+    person("Maria del Pilar", "Castro", , "mdpc010407@gmail.com", role = "aut")
+  )
+Description: Read weather station data from a URL, by default data from
+    stations of the National Institute of Agricultural Technology (INTA)
+    available in the Agricultural Information and Management System (SIGA).
+    It includes functions to summarize any numeric variable of one or more
+    stations and to plot its monthly average. It also provides sample data
+    to explore and test the package's functions.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Config/roxygen2/version: 8.1.0

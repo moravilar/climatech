@@ -27,11 +27,17 @@
 #'   por separado para cada estacion. Si es `FALSE` (por defecto), se
 #'   calcula con todos los datos juntos, aunque haya mas de una estacion.
 #'
-#' @return Una tabla en formato largo, con cinco filas por cada mes (o por
-#'   cada combinacion de estacion y mes, si `estaciones = TRUE`) y las
-#'   columnas: id (identificador de la estacion, solo si estaciones = TRUE),
-#'   mes (del 1 al 12), estadistico ya sea media, desvio estandar, q1, mediana
-#'   o q3, y valor (valor de tal medida).
+#' @return Un tibble en formato largo, con cinco filas por cada mes (o por
+#'   cada combinacion de estacion y mes, si `por_estacion = TRUE`) y las
+#'   columnas:
+#'   \describe{
+#'     \item{id}{Identificador de la estacion. Solo aparece si
+#'       `por_estacion = TRUE`.}
+#'     \item{mes}{Numero del mes, de 1 a 12.}
+#'     \item{estadistico}{Nombre de la medida: `"media"`, `"desvio"`,
+#'       `"q1"`, `"mediana"` o `"q3"`.}
+#'     \item{valor}{Valor de la medida.}
+#'   }
 #'
 #' @examples
 #' # datos inventados de dos estaciones
@@ -58,7 +64,7 @@
 #' }
 #'
 #' @export
-tabla_resumen <- function(datos, variable = "temperatura_abrigo_150cm", estaciones = FALSE) {
+tabla_resumen <- function(datos, variable = "temperatura_abrigo_150cm", por_estacion = FALSE) {
 
   if (!is.data.frame(datos)) {
     cli::cli_abort("{.arg datos} tiene que ser un data frame.")
@@ -66,14 +72,14 @@ tabla_resumen <- function(datos, variable = "temperatura_abrigo_150cm", estacion
   if (!is.character(variable) || length(variable) != 1 || is.na(variable) || variable == "") {
     cli::cli_abort("{.arg variable} tiene que ser un unico texto, por ejemplo {.val temperatura_abrigo_150cm}.")
   }
-  if (!is.logical(estaciones) || length(estaciones) != 1 || is.na(estaciones)) {
+  if (!is.logical(por_estacion) || length(por_estacion) != 1 || is.na(por_estacion)) {
     cli::cli_abort("{.arg por_estacion} tiene que ser {.val TRUE} o {.val FALSE}.")
   }
   if (!("fecha" %in% names(datos))) {
     cli::cli_abort("{.arg datos} tiene que tener la columna {.val fecha}.")
   }
   # id solo hace falta si se pide el resumen por estacion
-  if (estaciones && !("id" %in% names(datos))) {
+  if (por_estacion && !("id" %in% names(datos))) {
     cli::cli_abort("Para resumir por estacion, {.arg datos} tiene que tener la columna {.val id}.")
   }
   # nos fijamos que variable exista, pero que tambien no le aparezca un mensaje
@@ -107,10 +113,18 @@ tabla_resumen <- function(datos, variable = "temperatura_abrigo_150cm", estacion
   # copiamos la variable elegida a una columna con nombre fijo,
   # asi summarise la calcula por grupo (y no sobre la columna entera)
   datos$valor <- datos[[variable]]
+
+  cantidad_na <- sum(is.na(datos$valor_variable))
+  if (cantidad_na > 0) {
+    cli::cli_inform(
+      "Hay {cantidad_na} valor{?es} faltante{?s} ({.code NA}) en {.val {variable}}, que no se usa{?n} en los calculos."
+    )
+  }
+
   datos <- dplyr::mutate(datos, mes = lubridate::month(fecha))
 
   # agrupamos por estacion y mes, o solo por mes
-  if (estaciones) {
+  if (por_estacion) {
     datos <- dplyr::group_by(datos, id, mes)
   } else {
     datos <- dplyr::group_by(datos, mes)
