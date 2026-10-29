@@ -1,10 +1,10 @@
 #' Datos meteorologicos de dos estaciones del INTA
 #'
 #' Mediciones diarias de dos estaciones meteorologicas del INTA (NH0437 y
-#' NH0910) entre 2014 y 2023. Es un recorte pensado para explorar y probar
+#' NH0472) entre 2004 y 2013. Es un recorte pensado para explorar y probar
 #' las funciones del paquete.
 #'
-#' @format Un data frame con XXXX filas y 4 variables:
+#' @format Un data frame con 7306 filas y 4 variables:
 #' \describe{
 #'   \item{id}{Identificador de la estacion.}
 #'   \item{fecha}{Fecha de la medicion.}

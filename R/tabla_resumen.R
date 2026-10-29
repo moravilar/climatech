@@ -107,7 +107,7 @@ tabla_resumen <- function(datos, variable = "temperatura_abrigo_150cm", por_esta
   cantidad_na <- sum(is.na(datos$valor))
   if (cantidad_na > 0) {
     cli::cli_inform(
-      "Hay {cantidad_na} valor(es) faltante(s) ({.code NA}) en {.val {variable}}, que no se usa{?n} en los calculos."
+      "Hay {cantidad_na} valor(es) faltante(s) ({.code NA}) en {.val {variable}}, que no se usa(n) en los calculos."
     )
   }
 

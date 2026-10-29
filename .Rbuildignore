@@ -1,3 +1,4 @@
 ^climatech\.Rproj$
 ^\.Rproj\.user$
 ^README\.Rmd$
+^data_raw$
