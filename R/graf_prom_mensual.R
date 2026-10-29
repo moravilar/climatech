@@ -169,7 +169,7 @@ graf_prom_mensual <- function(datos, variable = "temperatura_abrigo_150cm", por_
                                ggplot2::aes(x = mes,
                                             y = promedio,
                                             color = id)) +
-      ggplot2::geom_line(linewidth = 1, linejoin = "round") + +
+      ggplot2::geom_line(linewidth = 1, linejoin = "round") +
       # la leyenda de colores solo existe cuando hay una linea por estacion
       ggplot2::labs(color = "Estacion")
     # si no hay colores, quedan los automaticos de ggplot2
