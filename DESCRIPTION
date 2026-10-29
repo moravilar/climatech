@@ -1,20 +1,22 @@
 Package: climatech
-Title: Download, Summarize and Plot Weather Station Data
+Title: Descargar, Resumir y Graficar Datos de Estaciones Meteorologicas
 Version: 0.0.0.9000
 Authors@R: c(
     person("Mora", "Vilar", , "moravilaraustral@gmail.com", role = c("aut", "cre")),
     person("Maria del Pilar", "Castro", , "mdpc010407@gmail.com", role = "aut")
   )
-Description: Read weather station data from a URL, by default data from
-    stations of the National Institute of Agricultural Technology (INTA)
-    available in the Agricultural Information and Management System (SIGA).
-    It includes functions to summarize any numeric variable of one or more
-    stations and to plot its monthly average. It also provides sample data
-    to explore and test the package's functions.
+Description: Descarga y lee datos de estaciones meteorologicas desde una URL,
+    por defecto datos de estaciones del Instituto Nacional de Tecnologia
+    Agropecuaria (INTA) disponibles en el Sistema de Informacion y Gestion
+    Agrometeorologica (SIGA). Incluye funciones para resumir cualquier
+    variable numerica de una o mas estaciones y para graficar su promedio
+    mensual. Tambien incluye datos de ejemplo para explorar y probar las
+    funciones del paquete.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Config/roxygen2/version: 8.1.0
 Encoding: UTF-8
+Language: es
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/moravilar/climatech
 BugReports: https://github.com/moravilar/climatech/issues
