@@ -4,17 +4,37 @@
 \alias{graf_prom_mensual}
 \title{Graficar el promedio mensual de una variable}
 \usage{
-graf_prom_mensual(datos, variable, colores = "steelblue")
+graf_prom_mensual(
+  datos,
+  variable = "temperatura_abrigo_150cm",
+  por_estacion = FALSE,
+  colores = NULL,
+  titulo = "Temperatura"
+)
 }
 \arguments{
 \item{datos}{Un data frame con una columna \code{fecha} y al menos una
-columna numerica.}
+columna numerica. La columna \code{fecha} puede ser de tipo fecha (\code{Date})
+o texto en el orden anio-mes-dia, por ejemplo \code{"1961-07-01"}. Si
+\code{por_estacion = TRUE}, tambien tiene que tener la columna \code{id}, que
+identifica a cada estacion.}
 
 \item{variable}{Nombre de la columna numerica a promediar, como
 cadena de caracteres. Por defecto, \code{"temperatura_abrigo_150cm"}.}
 
-\item{colores}{Un solo color para la linea del grafico, como cadena
-de caracteres. Por defecto, \code{"steelblue"}.}
+\item{por_estacion}{\code{TRUE} o \code{FALSE}. Si es \code{TRUE}, se dibuja una linea
+para cada estacion. Si es \code{FALSE} (por defecto), se dibuja una sola
+linea con todos los datos juntos, aunque haya mas de una estacion.}
+
+\item{colores}{Colores de las lineas, como cadena de caracteres. Si
+\code{por_estacion = FALSE}, un solo color. Si \code{por_estacion = TRUE}, un
+color por estacion, en el orden alfabetico de los \code{id}. Por defecto
+(\code{NULL}), se usa \code{"steelblue"} para una sola linea y los colores
+automaticos de ggplot2 para varias.}
+
+\item{titulo}{Titulo del grafico, como cadena de caracteres. Por
+defecto, \code{"Temperatura"}. Si se grafica otra variable, conviene
+cambiarlo.}
 }
 \value{
 Un objeto \code{ggplot} con el promedio mensual de \code{variable}.
@@ -23,7 +43,8 @@ Se le pueden agregar capas de ggplot2 con \code{+}.
 \description{
 Calcula el promedio de una variable numerica para cada mes del anio
 y lo representa en un grafico de lineas, lo que permite observar
-su variacion a lo largo del anio.
+su variacion a lo largo del anio. El grafico se puede hacer con todos
+los datos juntos o con una linea para cada estacion.
 }
 \details{
 El promedio se calcula agrupando las observaciones por mes (1 a 12).
@@ -31,20 +52,29 @@ Si los datos abarcan varios anios, el promedio de cada mes combina
 todos los anios: por ejemplo, el valor de enero es el promedio de
 todos los eneros disponibles.
 
-La funcion no distingue entre estaciones meteorologicas. Si \code{datos}
-contiene observaciones de mas de una estacion, se promedian todas
-juntas; para graficar una sola estacion, filtrar los datos antes de
-usar la funcion.
+Si \code{por_estacion = FALSE}, la funcion no distingue entre estaciones
+meteorologicas: si \code{datos} contiene observaciones de mas de una
+estacion, se promedian todas juntas.
+
+Si la columna \code{fecha} es texto, se convierte a fecha dentro de la
+funcion (el data frame original no se modifica).
 
 Los valores faltantes (\code{NA}) de \code{variable} se ignoran al calcular
 los promedios. Si hay alguno, la funcion informa en la consola
 cuantos se ignoraron.
 }
 \examples{
-# Temperatura de abrigo a 150 cm (variable por defecto)
-graf_mensual(NOMBRE_DATASET)
+# temperatura de abrigo a 150 cm (variable por defecto), todos los datos juntos
+graf_prom_mensual(datos_estaciones)
 
-# Cambiando el color de la linea
-graf_mensual(NOMBRE_DATASET, colores = "firebrick")
+# una linea para cada estacion
+graf_prom_mensual(datos_estaciones, por_estacion = TRUE)
 
+# eligiendo un color para cada estacion
+graf_prom_mensual(datos_estaciones, por_estacion = TRUE,
+                  colores = c("orchid3", "steelblue"))
+
+# otra variable, con su propio titulo
+graf_prom_mensual(datos_estaciones, variable = "humedad_media_8_14_20",
+                  titulo = "Humedad")
 }

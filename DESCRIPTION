@@ -1,5 +1,5 @@
 Package: climatech
-Title: Read, Summarize and Plot Weather Station Data
+Title: Download, Summarize and Plot Weather Station Data
 Version: 0.0.0.9000
 Authors@R: c(
     person("Mora", "Vilar", , "moravilaraustral@gmail.com", role = c("aut", "cre")),
@@ -20,3 +20,6 @@ URL: https://github.com/moravilar/climatech
 BugReports: https://github.com/moravilar/climatech/issues
 Imports: 
     readr
+Depends: 
+    R (>= 3.5)
+LazyData: true

@@ -9,11 +9,12 @@
 #' estaciones meteorologicas del INTA, pero se puede indicar cualquier otra
 #' direccion que cumpla ese formato.
 #'
-#' Antes de leer el archivo, la funcion revisa su contenido. Si lo descargado
-#' esta vacio o es una pagina web en lugar de un CSV, se detiene con un error
-#' y borra el archivo descargado. Si la tabla leida tiene una sola columna o
-#' no tiene filas de datos, devuelve la tabla igual pero muestra una
-#' advertencia, porque puede tratarse de un archivo con otro formato.
+#' Antes de leer el archivo, la funcion revisa su contenido. Si esta vacio o
+#' es una pagina web en lugar de un CSV, se detiene con un error. Si el
+#' archivo se acaba de descargar, ademas lo borra; si ya estaba en `ruta`,
+#' no lo borra. Si la tabla leida tiene una sola columna o no tiene filas de
+#' datos, devuelve la tabla igual pero muestra una advertencia, porque puede
+#' tratarse de un archivo con otro formato.
 #'
 #' Si la descarga falla (por ejemplo, sin conexion a internet o con una
 #' direccion que no existe), se muestra el error de R correspondiente. El
@@ -36,11 +37,14 @@
 #' @return Una tabla con los datos del archivo.
 #'
 #' @examples
-#' \donttest{
-#' # datos de una estacion, con la URL por defecto
-#' datos <- leer_dataset("NH0437", ruta = file.path(tempdir(), "NH0437.csv"))
+#' # necesita conexion a internet para descargar los datos
+#' ruta <- file.path(tempdir(), "NH0437.csv")
+#' datos <- leer_dataset("NH0437", ruta = ruta)
 #' head(datos)
-#' }
+#'
+#' # si se vuelve a llamar con la misma ruta, se lee el archivo
+#' # guardado y no se descarga de nuevo
+#' datos <- leer_dataset("NH0437", ruta = ruta)
 #'
 #' @export
 
@@ -50,7 +54,7 @@ leer_dataset <- function(dataset, ruta, url_base = "https://raw.githubuserconten
   #ponemos que la ruta tenga q especificar si o si el usuario, y el nombre del dataset tambien.
   # si el archivo no existe lo descargamos asi no lo bajamos cada vez q corremos el codigo
   if (!is.character(dataset) || length(dataset) != 1 || is.na(dataset) || dataset == "") {
-    cli::cli_abort("{.arg dataset} tiene que ser un unico texto, por ejemplo {.val NH0472}.")
+    cli::cli_abort("{.arg dataset} tiene que ser un unico texto, por ejemplo {.val NH0437}.")
   }
   #claude nos dio estos trucos de .arg y .val, que ayudan a referenciar para que el usuario entienda mejor
   # de lo que le estamos hablando cuando le salta este mensaje
@@ -67,12 +71,16 @@ leer_dataset <- function(dataset, ruta, url_base = "https://raw.githubuserconten
       "{.arg url_base} debe empezar con {.val http}.")
   }
 
+  # guardamos si el archivo se descargo en esta llamada, para borrarlo
+  # solo en ese caso (nunca un archivo que ya tenia el usuario)
+  descargado <- FALSE
+  url <- paste0(url_base, dataset, ".csv")
 
   if (!file.exists(ruta) || length(readLines(ruta, n = 1)) == 0) {
-    url <- paste0(url_base, dataset, ".csv")
     cli::cli_inform("Descargando {.val {dataset}} desde {.url {url}}...")
     dir.create(dirname(ruta), showWarnings = FALSE, recursive = TRUE)
     utils::download.file(url = url, destfile = ruta, mode = "wb", quiet = TRUE)
+    descargado <- TRUE
   } else {
     cli::cli_inform("El archivo {.file {ruta}} ya existe, se lee sin descargar.")
   }
@@ -80,7 +88,9 @@ leer_dataset <- function(dataset, ruta, url_base = "https://raw.githubuserconten
   # revisamos que lo descargado sea un csv y no otra cosa
   primera_linea <- readLines(ruta, n = 1)
   if (length(primera_linea) == 0) {
-    file.remove(ruta)
+    if (descargado) {
+      file.remove(ruta)
+    }
     cli::cli_abort(c(
       "Lo descargado desde {.url {url}} esta vacio.",
       "i" = "Revisa que {.arg dataset} y {.arg url_base} sean correctos."
@@ -88,14 +98,20 @@ leer_dataset <- function(dataset, ruta, url_base = "https://raw.githubuserconten
   }
   # ponemos < por <!DOCTYPE>
   if (startsWith(primera_linea, "<")) {
-    file.remove(ruta)
+    if (descargado) {
+      file.remove(ruta)
+    }
     cli::cli_abort(c(
-      "Lo descargado no es un CSV, parece una pagina web.",
+      "El archivo {.file {ruta}} no es un CSV, parece una pagina web.",
       "i" = "Revisa que {.arg url_base} sea la direccion del boton Raw."
     ))
   }
 
-  datos <- readr::read_csv(ruta)
+  # read_csv decide el tipo de cada columna mirando solo las primeras 1000
+  # filas; si en esas filas una variable esta vacia, la toma como logica y
+  # despues convierte en NA los numeros que aparecen. Con guess_max = Inf
+  # mira todas las filas antes de decidir.
+  datos <- readr::read_csv(ruta, guess_max = Inf, show_col_types = FALSE)
 
   # si la tabla tiene una sola columna, puede que el archivo use otro
   # separador (por ejemplo ";") o que no sea un CSV
@@ -119,4 +135,4 @@ leer_dataset <- function(dataset, ruta, url_base = "https://raw.githubuserconten
 #notaciones para eliminar despues:
 # trucos nuevos que dio claude:
 # .file, .val, etc,
-#
+# tempdir() devuelve la carpeta temporal de tu sesión de R

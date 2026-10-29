@@ -10,20 +10,20 @@
 #' hay ningun dato de la variable, la media da `NaN` y el resto de los
 #' estadisticos da `NA`. Si hay un solo dato, el desvio da `NA`.
 #'
-#' Si la columna `fecha` es texto, se convierte a fecha dentro de la funcion
-#' (el data frame original no se modifica). Tiene que estar en el orden
-#' anio-mes-dia, por ejemplo `"1961-07-01"`.
+#' La columna `fecha` puede ser de tipo fecha (`Date`) o texto. Si es texto,
+#' se convierte a fecha dentro de la funcion (el data frame original no se
+#' modifica). Tiene que estar en el orden anio-mes-dia, por ejemplo
+#' `"1961-07-01"`.
 #'
 #' @param datos Data frame con una fila por medicion. Tiene que tener la
 #'   columna `fecha` (dia de la medicion) y la columna indicada en
-#'   `variable`. Si `estaciones = TRUE`, tambien tiene que tener la columna
+#'   `variable`. Si `por_estacion = TRUE`, tambien tiene que tener la columna
 #'   `id`, que identifica a cada estacion (por ejemplo, `"NH0472"`). Las
 #'   filas con `id` vacio (`NA`) se resumen juntas como un grupo aparte.
 #' @param variable Texto con el nombre de la columna numerica a resumir,
 #'   entre comillas. Por defecto, `"temperatura_abrigo_150cm"`, la
 #'   temperatura de los datos del paquete.
-#'   .
-#' @param estaciones `TRUE` o `FALSE`. Si es `TRUE`, el resumen se calcula
+#' @param por_estacion `TRUE` o `FALSE`. Si es `TRUE`, el resumen se calcula
 #'   por separado para cada estacion. Si es `FALSE` (por defecto), se
 #'   calcula con todos los datos juntos, aunque haya mas de una estacion.
 #'
@@ -40,28 +40,14 @@
 #'   }
 #'
 #' @examples
-#' # datos inventados de dos estaciones
-#' datos <- data.frame(
-#'   id = c("NH0001", "NH0001", "NH0002", "NH0002"),
-#'   fecha = c("2020-01-01", "2020-01-02", "2020-01-01", "2020-01-02"),
-#'   temperatura_abrigo_150cm = c(25.1, 27.3, 22.0, NA),
-#'   humedad_media = c(70, 65, 80, 75)
-#' )
-#'
 #' # resumen de la temperatura con todos los datos juntos (valor por defecto)
-#' tabla_resumen(datos)
+#' tabla_resumen(datos_estaciones)
 #'
 #' # resumen de la temperatura para cada estacion
-#' tabla_resumen(datos, por_estacion = TRUE)
+#' tabla_resumen(datos_estaciones, por_estacion = TRUE)
 #'
 #' # resumen de otra variable
-#' tabla_resumen(datos, variable = "humedad_media")
-#'
-#' \donttest{
-#' # con datos reales de la materia
-#' datos <- leer_dataset("NH0437", ruta = file.path(tempdir(), "NH0437.csv"))
-#' tabla_resumen(datos, por_estacion = TRUE)
-#' }
+#' tabla_resumen(datos_estaciones, variable = "humedad_media_8_14_20")
 #'
 #' @export
 tabla_resumen <- function(datos, variable = "temperatura_abrigo_150cm", por_estacion = FALSE) {
@@ -83,7 +69,7 @@ tabla_resumen <- function(datos, variable = "temperatura_abrigo_150cm", por_esta
     cli::cli_abort("Para resumir por estacion, {.arg datos} tiene que tener la columna {.val id}.")
   }
   # nos fijamos que variable exista, pero que tambien no le aparezca un mensaje
-  # como que "temperatura_abrigo_150cm" cuando este usando otro dataset cistinto
+  # como que "temperatura_abrigo_150cm" cuando este usando otro dataset distinto
   # de el del paquete, porque no va a entender nada
   if (!(variable %in% names(datos))) {
     cli::cli_abort(c(
@@ -109,15 +95,19 @@ tabla_resumen <- function(datos, variable = "temperatura_abrigo_150cm", por_esta
     }
     datos$fecha <- fechas
   }
+  # si no era texto ni fecha (por ejemplo, numeros), no podemos sacar el mes
+  if (!inherits(datos$fecha, c("Date", "POSIXt"))) {
+    cli::cli_abort("La columna {.val fecha} tiene que ser de tipo fecha o texto, por ejemplo {.val 1961-07-01}.")
+  }
 
   # copiamos la variable elegida a una columna con nombre fijo,
   # asi summarise la calcula por grupo (y no sobre la columna entera)
   datos$valor <- datos[[variable]]
 
-  cantidad_na <- sum(is.na(datos$valor_variable))
+  cantidad_na <- sum(is.na(datos$valor))
   if (cantidad_na > 0) {
     cli::cli_inform(
-      "Hay {cantidad_na} valor{?es} faltante{?s} ({.code NA}) en {.val {variable}}, que no se usa{?n} en los calculos."
+      "Hay {cantidad_na} valor(es) faltante(s) ({.code NA}) en {.val {variable}}, que no se usa{?n} en los calculos."
     )
   }
 

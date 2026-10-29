@@ -4,30 +4,39 @@
 \alias{tabla_resumen}
 \title{Tabla de resumen mensual de una variable}
 \usage{
-tabla_resumen(datos, variable = "temperatura_abrigo_150cm", estaciones = FALSE)
+tabla_resumen(
+  datos,
+  variable = "temperatura_abrigo_150cm",
+  por_estacion = FALSE
+)
 }
 \arguments{
 \item{datos}{Data frame con una fila por medicion. Tiene que tener la
 columna \code{fecha} (dia de la medicion) y la columna indicada en
-\code{variable}. Si \code{estaciones = TRUE}, tambien tiene que tener la columna
+\code{variable}. Si \code{por_estacion = TRUE}, tambien tiene que tener la columna
 \code{id}, que identifica a cada estacion (por ejemplo, \code{"NH0472"}). Las
 filas con \code{id} vacio (\code{NA}) se resumen juntas como un grupo aparte.}
 
 \item{variable}{Texto con el nombre de la columna numerica a resumir,
 entre comillas. Por defecto, \code{"temperatura_abrigo_150cm"}, la
-temperatura de los datos del paquete.
-.}
+temperatura de los datos del paquete.}
 
-\item{estaciones}{\code{TRUE} o \code{FALSE}. Si es \code{TRUE}, el resumen se calcula
+\item{por_estacion}{\code{TRUE} o \code{FALSE}. Si es \code{TRUE}, el resumen se calcula
 por separado para cada estacion. Si es \code{FALSE} (por defecto), se
 calcula con todos los datos juntos, aunque haya mas de una estacion.}
 }
 \value{
-Una tabla en formato largo, con cinco filas por cada mes (o por
-cada combinacion de estacion y mes, si \code{estaciones = TRUE}) y las
-columnas: id (identificador de la estacion, solo si estaciones = TRUE),
-mes (del 1 al 12), estadistico ya sea media, desvio estandar, q1, mediana
-o q3, y valor (valor de tal medida).
+Un tibble en formato largo, con cinco filas por cada mes (o por
+cada combinacion de estacion y mes, si \code{por_estacion = TRUE}) y las
+columnas:
+\describe{
+\item{id}{Identificador de la estacion. Solo aparece si
+\code{por_estacion = TRUE}.}
+\item{mes}{Numero del mes, de 1 a 12.}
+\item{estadistico}{Nombre de la medida: \code{"media"}, \code{"desvio"},
+\code{"q1"}, \code{"mediana"} o \code{"q3"}.}
+\item{valor}{Valor de la medida.}
+}
 }
 \description{
 Calcula medidas de resumen de una variable numerica para cada mes del
@@ -41,32 +50,19 @@ Los valores faltantes (\code{NA}) se ignoran en los calculos. Si en un mes no
 hay ningun dato de la variable, la media da \code{NaN} y el resto de los
 estadisticos da \code{NA}. Si hay un solo dato, el desvio da \code{NA}.
 
-Si la columna \code{fecha} es texto, se convierte a fecha dentro de la funcion
-(el data frame original no se modifica). Tiene que estar en el orden
-anio-mes-dia, por ejemplo \code{"1961-07-01"}.
+La columna \code{fecha} puede ser de tipo fecha (\code{Date}) o texto. Si es texto,
+se convierte a fecha dentro de la funcion (el data frame original no se
+modifica). Tiene que estar en el orden anio-mes-dia, por ejemplo
+\code{"1961-07-01"}.
 }
 \examples{
-# datos inventados de dos estaciones
-datos <- data.frame(
-  id = c("NH0001", "NH0001", "NH0002", "NH0002"),
-  fecha = c("2020-01-01", "2020-01-02", "2020-01-01", "2020-01-02"),
-  temperatura_abrigo_150cm = c(25.1, 27.3, 22.0, NA),
-  humedad_media = c(70, 65, 80, 75)
-)
-
 # resumen de la temperatura con todos los datos juntos (valor por defecto)
-tabla_resumen(datos)
+tabla_resumen(datos_estaciones)
 
 # resumen de la temperatura para cada estacion
-tabla_resumen(datos, por_estacion = TRUE)
+tabla_resumen(datos_estaciones, por_estacion = TRUE)
 
 # resumen de otra variable
-tabla_resumen(datos, variable = "humedad_media")
-
-\donttest{
-# con datos reales de la materia
-datos <- leer_dataset("NH0437", ruta = file.path(tempdir(), "NH0437.csv"))
-tabla_resumen(datos, por_estacion = TRUE)
-}
+tabla_resumen(datos_estaciones, variable = "humedad_media_8_14_20")
 
 }
