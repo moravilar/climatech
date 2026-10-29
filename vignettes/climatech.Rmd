@@ -130,7 +130,17 @@ En este caso la relacion se invierte: Oliveros es mas humeda que Reconquista
 en todos los meses.
  
 El resultado es un grafico de ggplot2, asi que se le pueden agregar capas con
-`+`, por ejemplo para cambiar las etiquetas de los ejes.
+`+`. Por ejemplo, con `labs()` se pueden cambiar las etiquetas: solo se
+reemplazan las que se indican y el resto queda como estaba.
+
+```{r, fig.width = 7, fig.height = 4}
+library(ggplot2)
+
+graf_prom_mensual(datos_estaciones, por_estacion = TRUE) +
+  labs(y = "Temperatura media (grados Celsius)",
+       color = "Estacion meteorologica",
+       caption = "Fuente: SIGA, INTA")
+```
  
 ## Usar datos de otra estacion
  
