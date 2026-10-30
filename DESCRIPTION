@@ -18,10 +18,17 @@ Config/roxygen2/version: 8.1.0
 Encoding: UTF-8
 Language: es
 Roxygen: list(markdown = TRUE)
-URL: https://github.com/moravilar/climatech
+URL: https://github.com/moravilar/climatech, https://moravilar.github.io/climatech/
 BugReports: https://github.com/moravilar/climatech/issues
 Imports: 
-    readr
+    cli,
+    dplyr,
+    ggplot2 (>= 3.4.0),
+    lubridate,
+    readr,
+    stats,
+    tidyr,
+    utils
 Depends: 
     R (>= 3.5)
 LazyData: true
