@@ -30,7 +30,7 @@ Imports:
     tidyr,
     utils
 Depends: 
-    R (>= 3.5)
+    R (>= 4.1.0)
 LazyData: true
 Suggests: 
     knitr,
