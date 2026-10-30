@@ -1,9 +1,7 @@
 ---
 output: github_document
 ---
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
+ 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -12,51 +10,75 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
-
+ 
 # climatech
-
+ 
 <!-- badges: start -->
 <!-- badges: end -->
-
-The goal of climatech is to make it easy to access and analyze data from
-INTA weather stations, available through the Agricultural Information and
-Management System (SIGA). With climatech you can download and read data from
-any station using its ID, get a summary table of shelter temperature for one
-or more stations, and plot its monthly average. The package also includes
-example data so you can explore its functions without downloading anything.It is
-a practice package developed as part of a university course and is not intended 
-for real-world use.
-
-## Installation
-
-You can install the development version of climatech from [GitHub](https://github.com/) with:
-
+ 
+climatech permite descargar, resumir y graficar datos de estaciones
+meteorologicas. Por defecto trabaja con datos de estaciones del Instituto
+Nacional de Tecnologia Agropecuaria (INTA), disponibles en el Sistema de
+Informacion y Gestion Agrometeorologica (SIGA).
+ 
+Con climatech podes:
+ 
+- descargar y leer los datos de una estacion con `leer_dataset()`;
+- obtener un resumen mensual de cualquier variable numerica, para una o
+  varias estaciones, con `tabla_resumen()`;
+- graficar el promedio mensual de una variable numerica con `graf_prom_mensual()`.
+ 
+El paquete incluye ademas `datos_estaciones`, un conjunto de datos de ejemplo
+con mediciones diarias de dos estaciones del INTA en Santa Fe, para probar las
+funciones sin descargar nada.
+ 
+climatech fue desarrollado como trabajo practico de la materia Programacion II
+de la Licenciatura en Ciencia de Datos (Universidad Austral). Es un paquete de
+practica y no esta pensado para usarse en analisis reales.
+ 
+## Instalacion
+ 
+Podes instalar la version en desarrollo de climatech desde
+[GitHub](https://github.com/moravilar/climatech) con:
+ 
 ``` r
 # install.packages("pak")
 pak::pak("moravilar/climatech")
 ```
-
-## Example
-
-This is a basic example which shows you how to solve a common problem:
-
-```{r example}
+ 
+## Ejemplo de uso
+ 
+```{r}
 library(climatech)
-## basic example code
 ```
-
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
-```{r cars}
-summary(cars)
+ 
+Resumen mensual de la temperatura para cada estacion de los datos de ejemplo:
+ 
+```{r}
+tabla_resumen(datos_estaciones, por_estacion = TRUE)
 ```
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
+ 
+Promedio mensual de la temperatura, con una linea para cada estacion:
+ 
+```{r grafico-ejemplo, fig.width = 7, fig.height = 4}
+graf_prom_mensual(datos_estaciones, por_estacion = TRUE)
 ```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+ 
+Para descargar los datos de otra estacion, se indica su identificador y la
+ruta donde guardar el archivo:
+ 
+```{r, eval = FALSE}
+nh0098 <- leer_dataset("NH0098", ruta = "datos/NH0098.csv")
+```
+ 
+Para ver el uso completo de las funciones, consulta la vineta del paquete:
+ 
+```{r, eval = FALSE}
+vignette("climatech")
+```
+ 
+## Autoras
+ 
+- Mora Vilar
+- Maria del Pilar Castro
+ 
