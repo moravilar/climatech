@@ -12,8 +12,7 @@
 #'   \item{humedad_media_8_14_20}{Humedad relativa media del dia, calculada
 #'     con las mediciones de las 8, 14 y 20 horas, en porcentaje.}
 #' }
-#' @source Datos originales del Sistema de Informacion y Gestion
-#'   Agrometeorologica (SIGA) del INTA: <https://siga.inta.gob.ar/>.
-#'   Descargados de la recopilacion publica disponible en
-#'   <https://github.com/rse-r/intro-programacion>.
+#' @source Instituto Nacional de Tecnologia Agropecuaria (INTA), Sistema de
+#'   Informacion y Gestion Agrometeorologica (SIGA): <https://siga.inta.gob.ar/>.
+#'
 "datos_estaciones"

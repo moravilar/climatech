@@ -5,8 +5,8 @@
 #' directamente.
 #'
 #' La URL completa se arma como `url_base` + `dataset` + `".csv"`. Por defecto
-#' apunta al repositorio de datos de la materia, donde estan los datos de las
-#' estaciones meteorologicas del INTA, pero se puede indicar cualquier otra
+#' apunta a datos de estaciones meteorologicas del Instituto Nacional de
+#' Tecnologia Agropecuaria (INTA), pero se puede indicar cualquier otra
 #' direccion que cumpla ese formato.
 #'
 #' Antes de leer el archivo, la funcion revisa su contenido. Si esta vacio o
@@ -31,13 +31,14 @@
 #' @param url_base Texto con la direccion de la carpeta donde esta el archivo.
 #'   Debe empezar con `http` y terminar con `/`, y tiene que apuntar al
 #'   contenido crudo del archivo (en GitHub, la direccion del boton "Raw").
-#'   Por defecto es la carpeta de datos del repositorio de la materia:
+#'   Por defecto apunta a los datos de estaciones del INTA:
 #'   `"https://raw.githubusercontent.com/rse-r/intro-programacion/main/datos/"`.
 #'
 #' @return Una tabla con los datos del archivo.
 #'
 #' @examples
 #' # necesita conexion a internet para descargar los datos
+#' # tempdir() devuelve la carpeta temporal de tu sesion de R
 #' ruta <- file.path(tempdir(), "NH0437.csv")
 #' datos <- leer_dataset("NH0437", ruta = ruta)
 #' head(datos)
@@ -48,7 +49,6 @@
 #'
 #' @export
 
-
 leer_dataset <- function(dataset, ruta, url_base = "https://raw.githubusercontent.com/rse-r/intro-programacion/main/datos/"
 ) {
   #ponemos que la ruta tenga q especificar si o si el usuario, y el nombre del dataset tambien.
@@ -56,7 +56,7 @@ leer_dataset <- function(dataset, ruta, url_base = "https://raw.githubuserconten
   if (!is.character(dataset) || length(dataset) != 1 || is.na(dataset) || dataset == "") {
     cli::cli_abort("{.arg dataset} tiene que ser un unico texto, por ejemplo {.val NH0437}.")
   }
-  #claude nos dio estos trucos de .arg y .val, que ayudan a referenciar para que el usuario entienda mejor
+  #estos trucos de .arg y .val  ayudan a referenciar para que el usuario entienda mejor
   # de lo que le estamos hablando cuando le salta este mensaje
   # si utilizan otro tipo de dato, o pasan un vector o algo raro, lo manejamos para q no rompa todo
   if (!is.character(ruta) || length(ruta) != 1 || is.na(ruta) || ruta == "") {
@@ -65,7 +65,7 @@ leer_dataset <- function(dataset, ruta, url_base = "https://raw.githubuserconten
   if (!is.character(url_base) || length(url_base) != 1) {
     cli::cli_abort("{.arg url_base} debe ser un texto con una direccion web.")
   }
-  #startsWith es una funcion provista por claude, nos ayuda a verificar que la url comience con la estructura necesaria
+  #startsWith es una funcion que nos ayuda a verificar que la url comience con la estructura necesaria
   if (!startsWith(url_base, "http")) {
     cli::cli_abort(
       "{.arg url_base} debe empezar con {.val http}.")
@@ -131,8 +131,3 @@ leer_dataset <- function(dataset, ruta, url_base = "https://raw.githubuserconten
 
   return(datos)
 }
-
-#notaciones para eliminar despues:
-# trucos nuevos que dio claude:
-# .file, .val, etc,
-# tempdir() devuelve la carpeta temporal de tu sesión de R

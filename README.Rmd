@@ -71,14 +71,61 @@ ruta donde guardar el archivo:
 nh0098 <- leer_dataset("NH0098", ruta = "datos/NH0098.csv")
 ```
  
-Para ver el uso completo de las funciones, consulta la vineta del paquete:
- 
+Para ver el uso completo de las funciones, consulta la
+[vineta del paquete](https://moravilar.github.io/climatech/articles/climatech.html).
+Toda la documentacion esta disponible en la
+[pagina web de climatech](https://moravilar.github.io/climatech/).
+
+## Como esta pensado el paquete
+
+Algunas decisiones sobre como funciona climatech, y por que las tomamos.
+
+### La variable se indica como texto
+
+`graf_prom_mensual()` y `tabla_resumen()` reciben la variable a analizar
+como texto, entre comillas:
+
 ```{r, eval = FALSE}
-vignette("climatech")
+graf_prom_mensual(datos_estaciones, variable = "humedad_media_8_14_20",
+                  titulo = "Humedad")
 ```
- 
+
+Otra opcion era que el usuario pasara la columna directamente. Elegimos el
+texto porque es mas simple y menos confuso: alcanza con conocer el nombre
+de la columna, que se puede ver con `names(datos)`. Ademas, si la columna no
+existe, la funcion puede avisar con un mensaje claro cual es la que falta.
+
+Las dos funciones comparten los mismos argumentos principales (`datos`,
+`variable` y `por_estacion`), asi que quien aprende a usar una ya sabe usar
+la otra.
+
+### Sin tildes ni enies
+
+Todo el paquete (codigo, mensajes, documentacion y este README) esta escrito
+sin tildes ni enies. Para evitar problemas con el `R CMD check`, y para que todo
+el paquete sea consistente, decidimos no usarlos en ningun lado. Sabemos que se 
+lee un poco raro, pero asi el paquete funciona igual en cualquier sistema. 
+Existe la alternativa de escribir los caracteres con codigos como `\u00f1` pero 
+el codigo se vuelve mas dificil de leer.
+
+### `tabla_resumen()` se puede hacer de dos formas:
+
+- con todos los datos juntos (`por_estacion = FALSE`, el valor por defecto),
+  aunque haya mas de una estacion;
+- por separado para cada estacion (`por_estacion = TRUE`). En ese caso, los
+  datos tienen que tener una columna `id` que identifique a cada estacion;
+  si no la tienen, la funcion lo avisa con un error.
+
+```{r, eval = FALSE}
+tabla_resumen(datos_estaciones, variable = "humedad_media_8_14_20",
+              por_estacion = TRUE)
+```
+
+Asi la funcion sirve tanto para datos de una sola estacion, que no necesitan
+`id`, como para datos de varias. `graf_prom_mensual()` funciona de la misma
+manera.
+
 ## Autoras
  
-- Mora Vilar
-- Maria del Pilar Castro
- 
+- Castro, Maria del Pilar 
+- Vilar, Mora

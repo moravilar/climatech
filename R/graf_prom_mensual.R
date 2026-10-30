@@ -60,13 +60,11 @@
 #'                   titulo = "Humedad")
 #' @export
 
-# debido a que en la funcion leer_dataset, quitamos la variable id para que sea
-# una funcion mas "universal", aqui tambien hicimos cambios
-
-
 graf_prom_mensual <- function(datos, variable = "temperatura_abrigo_150cm", por_estacion = FALSE,
                               colores = NULL, titulo = "Temperatura") {
-  #nota: datos[[variable]] devuelve la columna como un vector
+  # datos[[variable]]: toma el valor de variable, que es un character con el
+  #nombre de una columna, y devuelve el vector de esa columna dentro de los datos
+  #con los que esta trabajando la funcion de dplyr o de ggplot2.
   if (!is.data.frame(datos)) {
     cli::cli_abort("{.arg datos} tiene que ser un data frame.")
   }
@@ -202,11 +200,3 @@ graf_prom_mensual <- function(datos, variable = "temperatura_abrigo_150cm", por_
   }
   return(grafico)
 }
-
-
-#para eliminar despues:
-# trucos que dio claude:
-# datos[[variable]]: toma el valor de variable, que es un character con el
-#nombre de una columna, y devuelve el vector de esa columna dentro de los datos
-#con los que esta trabajando la funcion de dplyr o de ggplot2.
-#

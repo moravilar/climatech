@@ -50,6 +50,7 @@
 #' tabla_resumen(datos_estaciones, variable = "humedad_media_8_14_20")
 #'
 #' @export
+
 tabla_resumen <- function(datos, variable = "temperatura_abrigo_150cm", por_estacion = FALSE) {
 
   if (!is.data.frame(datos)) {
