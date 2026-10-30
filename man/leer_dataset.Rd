@@ -54,6 +54,7 @@ mensaje previo de descarga indica que URL se intento usar.
 }
 \examples{
 # necesita conexion a internet para descargar los datos
+# tempdir() devuelve la carpeta temporal de tu sesión de R
 ruta <- file.path(tempdir(), "NH0437.csv")
 datos <- leer_dataset("NH0437", ruta = ruta)
 head(datos)
