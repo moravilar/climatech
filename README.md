@@ -82,12 +82,10 @@ la ruta donde guardar el archivo:
 nh0098 <- leer_dataset("NH0098", ruta = "datos/NH0098.csv")
 ```
 
-Para ver el uso completo de las funciones, consulta la vineta del
-paquete:
-
-``` r
-vignette("climatech")
-```
+Para ver el uso completo de las funciones, consulta la [vineta del
+paquete](https://moravilar.github.io/climatech/articles/climatech.html).
+Toda la documentacion esta disponible en la [pagina web de
+climatech](https://moravilar.github.io/climatech/).
 
 ## Autoras
 
