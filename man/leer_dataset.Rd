@@ -24,7 +24,7 @@ si existe pero esta vacio, se vuelve a descargar.}
 \item{url_base}{Texto con la direccion de la carpeta donde esta el archivo.
 Debe empezar con \code{http} y terminar con \code{/}, y tiene que apuntar al
 contenido crudo del archivo (en GitHub, la direccion del boton "Raw").
-Por defecto es la carpeta de datos del repositorio de la materia:
+Por defecto apunta a los datos de estaciones del INTA:
 \code{"https://raw.githubusercontent.com/rse-r/intro-programacion/main/datos/"}.}
 }
 \value{
@@ -37,8 +37,8 @@ directamente.
 }
 \details{
 La URL completa se arma como \code{url_base} + \code{dataset} + \code{".csv"}. Por defecto
-apunta al repositorio de datos de la materia, donde estan los datos de las
-estaciones meteorologicas del INTA, pero se puede indicar cualquier otra
+apunta a datos de estaciones meteorologicas del Instituto Nacional de
+Tecnologia Agropecuaria (INTA), pero se puede indicar cualquier otra
 direccion que cumpla ese formato.
 
 Antes de leer el archivo, la funcion revisa su contenido. Si esta vacio o
