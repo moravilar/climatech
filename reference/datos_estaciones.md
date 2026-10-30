@@ -33,7 +33,6 @@ Un data frame con 7306 filas y 4 variables:
 
 ## Source
 
-Datos originales del Sistema de Informacion y Gestion Agrometeorologica
-(SIGA) del INTA: <https://siga.inta.gob.ar/>. Descargados de la
-recopilacion publica disponible en
-<https://github.com/rse-r/intro-programacion>.
+Instituto Nacional de Tecnologia Agropecuaria (INTA), Sistema de
+Informacion y Gestion Agrometeorologica (SIGA):
+<https://siga.inta.gob.ar/>.

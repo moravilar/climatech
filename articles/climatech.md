@@ -254,7 +254,6 @@ graf_prom_mensual(nh0098, titulo = "Temperatura en la estacion NH0098")
 
 Por defecto,
 [`leer_dataset()`](https://moravilar.github.io/climatech/reference/leer_dataset.md)
-descarga los datos de una recopilacion publica de las estaciones del
-INTA. Con el argumento `url_base` se puede indicar otra direccion,
-siempre que contenga archivos CSV con el nombre de cada conjunto de
-datos.
+descarga datos de estaciones del INTA. Con el argumento `url_base` se
+puede indicar otra direccion, siempre que contenga archivos CSV con el
+nombre de cada conjunto de datos.

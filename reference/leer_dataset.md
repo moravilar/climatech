@@ -35,7 +35,7 @@ leer_dataset(
   Texto con la direccion de la carpeta donde esta el archivo. Debe
   empezar con `http` y terminar con `/`, y tiene que apuntar al
   contenido crudo del archivo (en GitHub, la direccion del boton "Raw").
-  Por defecto es la carpeta de datos del repositorio de la materia:
+  Por defecto apunta a los datos de estaciones del INTA:
   `"https://raw.githubusercontent.com/rse-r/intro-programacion/main/datos/"`.
 
 ## Value
@@ -45,8 +45,8 @@ Una tabla con los datos del archivo.
 ## Details
 
 La URL completa se arma como `url_base` + `dataset` + `".csv"`. Por
-defecto apunta al repositorio de datos de la materia, donde estan los
-datos de las estaciones meteorologicas del INTA, pero se puede indicar
+defecto apunta a datos de estaciones meteorologicas del Instituto
+Nacional de Tecnologia Agropecuaria (INTA), pero se puede indicar
 cualquier otra direccion que cumpla ese formato.
 
 Antes de leer el archivo, la funcion revisa su contenido. Si esta vacio
@@ -64,6 +64,7 @@ mensaje previo de descarga indica que URL se intento usar.
 
 ``` r
 # necesita conexion a internet para descargar los datos
+# tempdir() devuelve la carpeta temporal de tu sesion de R
 ruta <- file.path(tempdir(), "NH0437.csv")
 datos <- leer_dataset("NH0437", ruta = ruta)
 #> Descargando "NH0437" desde
@@ -89,5 +90,5 @@ head(datos)
 # si se vuelve a llamar con la misma ruta, se lee el archivo
 # guardado y no se descarga de nuevo
 datos <- leer_dataset("NH0437", ruta = ruta)
-#> El archivo /tmp/RtmpubopHg/NH0437.csv ya existe, se lee sin descargar.
+#> El archivo /tmp/RtmpoGQvjU/NH0437.csv ya existe, se lee sin descargar.
 ```
