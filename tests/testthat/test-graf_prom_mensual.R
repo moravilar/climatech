@@ -58,3 +58,107 @@ test_that("avisa cuantos valores faltantes se ignoraron", {
     "faltantes"
   )
 })
+
+test_that("da error si datos no es un data frame", {
+  expect_error(graf_prom_mensual(1:10), "data frame")
+  expect_error(graf_prom_mensual(NULL), "data frame")
+})
+
+test_that("da error si falta la columna fecha", {
+  sin_fecha <- datos_estaciones[, c("id", "temperatura_abrigo_150cm")]
+  expect_error(graf_prom_mensual(sin_fecha), "fecha")
+})
+
+test_that("da error si variable no es un solo texto", {
+  expect_error(graf_prom_mensual(datos_estaciones, variable = 3), "solo texto")
+  expect_error(
+    graf_prom_mensual(datos_estaciones, variable = c("a", "b")),
+    "solo texto"
+  )
+})
+
+test_that("da error si la variable no existe o no es numerica", {
+  expect_error(
+    graf_prom_mensual(datos_estaciones, variable = "lluvia"),
+    "no existe"
+  )
+  expect_error(
+    graf_prom_mensual(datos_estaciones, variable = "id"),
+    "numerica"
+  )
+})
+
+test_that("da error si la variable es toda NA", {
+  datos <- datos_estaciones
+  datos$temperatura_abrigo_150cm <- NA_real_
+  expect_error(graf_prom_mensual(datos), "todos sus valores son NA")
+})
+
+test_that("da error si por_estacion no es TRUE o FALSE", {
+  expect_error(graf_prom_mensual(datos_estaciones, por_estacion = "si"), "TRUE")
+  expect_error(graf_prom_mensual(datos_estaciones, por_estacion = NA), "TRUE")
+})
+
+test_that("da error si se pide por estacion y no hay columna id", {
+  sin_id <- datos_estaciones[, c("fecha", "temperatura_abrigo_150cm")]
+  expect_error(graf_prom_mensual(sin_id, por_estacion = TRUE), "id")
+})
+
+test_that("da error si el titulo no es un solo texto", {
+  expect_error(graf_prom_mensual(datos_estaciones, titulo = 2024), "titulo")
+  expect_error(
+    graf_prom_mensual(datos_estaciones, titulo = c("a", "b")),
+    "titulo"
+  )
+})
+
+test_that("da error si las fechas de texto no estan en orden anio-mes-dia", {
+  datos <- data.frame(fecha = c("05/01/2010", "06/01/2010"), x = c(1, 2))
+  expect_error(graf_prom_mensual(datos, variable = "x"), "no se pudieron leer")
+})
+
+test_that("da error si colores no es texto", {
+  expect_error(graf_prom_mensual(datos_estaciones, colores = 1), "texto")
+})
+
+test_that("da error si hay mas de un color para una sola linea", {
+  expect_error(
+    graf_prom_mensual(datos_estaciones, colores = c("red", "blue")),
+    "un solo color"
+  )
+})
+
+test_that("da error si hay menos colores que estaciones", {
+  expect_error(
+    graf_prom_mensual(datos_estaciones, por_estacion = TRUE, colores = "red"),
+    "estaciones"
+  )
+})
+
+test_that("usa el color elegido para una sola linea", {
+  p <- suppressMessages(graf_prom_mensual(datos_estaciones, colores = "orchid3"))
+
+  expect_equal(unique(ggplot2::layer_data(p)$colour), "orchid3")
+})
+
+test_that("usa un color elegido para cada estacion", {
+  p <- suppressMessages(
+    graf_prom_mensual(
+      datos_estaciones,
+      por_estacion = TRUE,
+      colores = c("orchid3", "darkorange")
+    )
+  )
+
+  expect_setequal(unique(ggplot2::layer_data(p)$colour), c("orchid3", "darkorange"))
+})
+
+test_that("las fechas como texto funcionan igual que como fecha", {
+  como_texto <- datos_estaciones
+  como_texto$fecha <- as.character(como_texto$fecha)
+
+  p_texto <- suppressMessages(graf_prom_mensual(como_texto))
+  p_fecha <- suppressMessages(graf_prom_mensual(datos_estaciones))
+
+  expect_equal(p_texto$data, p_fecha$data)
+})
