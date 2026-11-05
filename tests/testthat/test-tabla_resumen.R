@@ -48,3 +48,66 @@ test_that("avisa cuantos valores faltantes hay en la variable", {
     tabla_resumen(datos_estaciones),
     "faltante")
 })
+
+
+
+
+#------------------------------------
+# argumentos mal pasados (c/u prueba un cli_abort)
+
+test_that("da error si datos no es un data frame", {
+  expect_error(tabla_resumen(1:10), "data frame")
+  expect_error(tabla_resumen(NULL), "data frame")
+  expect_error(tabla_resumen(list(a = 1)), "data frame")
+})
+
+test_that("da error si variable no es un unico texto", {
+  expect_error(tabla_resumen(datos_estaciones, variable = 3), "unico texto")
+  expect_error(tabla_resumen(datos_estaciones, variable = c("a", "b")), "unico texto")
+  expect_error(tabla_resumen(datos_estaciones, variable = NA_character_), "unico texto")
+  expect_error(tabla_resumen(datos_estaciones, variable = ""), "unico texto")
+})
+
+test_that("da error si por_estacion no es TRUE o FALSE", {
+  expect_error(tabla_resumen(datos_estaciones, por_estacion = "si"), "TRUE")
+  expect_error(tabla_resumen(datos_estaciones, por_estacion = NA), "TRUE")
+  expect_error(tabla_resumen(datos_estaciones, por_estacion = c(TRUE, FALSE)), "TRUE")
+})
+
+test_that("da error si falta la columna fecha", {
+  sin_fecha <- datos_estaciones[, c("id", "temperatura_abrigo_150cm")]
+  expect_error(tabla_resumen(sin_fecha), "fecha")
+})
+
+test_that("da error si se pide por estacion y no hay columna id", {
+  sin_id <- datos_estaciones[, c("fecha", "temperatura_abrigo_150cm")]
+  expect_error(tabla_resumen(sin_id, por_estacion = TRUE), "id")
+})
+
+test_that("da error si la variable no existe en los datos", {
+  expect_error(
+    tabla_resumen(datos_estaciones, variable = "lluvia"),
+    "no esta en"
+  )
+})
+
+test_that("da error si la variable no es numerica", {
+  expect_error(
+    tabla_resumen(datos_estaciones, variable = "id"),
+    "numerica"
+  )
+})
+
+test_that("da error si las fechas de texto no estan en orden anio-mes-dia", {
+  datos <- data.frame(fecha = c("05/01/2010", "06/01/2010"), x = c(1, 2))
+  expect_error(tabla_resumen(datos, variable = "x"), "no se pudieron leer")
+})
+
+test_that("da error si la fecha no es texto ni fecha", {
+  datos <- data.frame(fecha = c(20100105, 20100106), x = c(1, 2))
+  expect_error(tabla_resumen(datos, variable = "x"), "tipo fecha")
+})
+
+
+
+
