@@ -108,6 +108,82 @@ test_that("da error si la fecha no es texto ni fecha", {
   expect_error(tabla_resumen(datos, variable = "x"), "tipo fecha")
 })
 
+# casos 'límite'; datos raros qe la funcion tiene que aguantar
 
+test_that("las fechas como texto dan el mismo resultado que como fecha", {
+  como_texto <- datos_estaciones
+  como_texto$fecha <- as.character(como_texto$fecha)
+
+  expect_equal(
+    suppressMessages(tabla_resumen(como_texto)),
+    suppressMessages(tabla_resumen(datos_estaciones))
+  )
+})
+
+test_that("con un data frame sin filas devuelve una tabla vacia", {
+  vacio <- datos_estaciones[0, ]
+
+  resultado <- tabla_resumen(vacio)
+
+  expect_equal(nrow(resultado), 0)
+})
+
+test_that("si la variable es toda NA la media da NaN y el resto NA", {
+  datos <- data.frame(
+    fecha = as.Date(c("2010-01-01", "2010-01-02")),
+    x = c(NA_real_, NA_real_)
+  )
+
+  resultado <- suppressMessages(tabla_resumen(datos, variable = "x"))
+
+  expect_true(is.nan(resultado$valor[resultado$estadistico == "media"]))
+  expect_true(is.na(resultado$valor[resultado$estadistico == "desvio"]))
+})
+
+test_that("con un solo dato en el mes el desvio da NA", {
+  datos <- data.frame(fecha = as.Date("2010-03-15"), x = 20)
+
+  resultado <- tabla_resumen(datos, variable = "x")
+
+  expect_equal(resultado$valor[resultado$estadistico == "media"], 20)
+  expect_true(is.na(resultado$valor[resultado$estadistico == "desvio"]))
+})
+
+test_that("solo aparecen los meses que tienen datos", {
+  datos <- data.frame(
+    fecha = as.Date(c("2010-01-10", "2010-07-10")),
+    x = c(30, 10)
+  )
+
+  resultado <- tabla_resumen(datos, variable = "x")
+
+  expect_setequal(unique(resultado$mes), c(1, 7))
+})
+
+test_that("las filas con id NA se resumen como un grupo aparte", {
+  datos <- data.frame(
+    id = c("A", "A", NA),
+    fecha = as.Date(c("2010-01-01", "2010-01-02", "2010-01-03")),
+    x = c(10, 20, 100)
+  )
+
+  resultado <- tabla_resumen(datos, variable = "x", por_estacion = TRUE)
+  medias <- resultado[resultado$estadistico == "media", ]
+
+  expect_equal(nrow(medias), 2)
+  expect_equal(medias$valor[medias$id %in% "A"], 15)
+  expect_equal(medias$valor[is.na(medias$id)], 100)
+})
+
+test_that("con valores negativos y decimales calcula bien la media", {
+  datos <- data.frame(
+    fecha = as.Date(c("2010-07-01", "2010-07-02", "2010-07-03")),
+    x = c(-2.5, 0, 1.5)
+  )
+
+  resultado <- tabla_resumen(datos, variable = "x")
+
+  expect_equal(resultado$valor[resultado$estadistico == "media"], -1 / 3)
+})
 
 
