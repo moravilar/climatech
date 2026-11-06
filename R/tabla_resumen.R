@@ -100,7 +100,12 @@ tabla_resumen <- function(datos, variable = "temperatura_abrigo_150cm", por_esta
   if (!inherits(datos$fecha, c("Date", "POSIXt"))) {
     cli::cli_abort("La columna {.val fecha} tiene que ser de tipo fecha o texto, por ejemplo {.val 1961-07-01}.")
   }
-
+  # las filas sin fecha no tienen mes, asi que las sacamos y avisamos
+  fechas_na <- sum(is.na(datos$fecha))
+  if (fechas_na > 0) {
+    cli::cli_inform("Se ignoraron {fechas_na} fila{?s} con {.field fecha} faltante ({.code NA}).")
+    datos <- datos[!is.na(datos$fecha), ]
+  }
   # copiamos la variable elegida a una columna con nombre fijo,
   # asi summarise la calcula por grupo (y no sobre la columna entera)
   datos$valor <- datos[[variable]]

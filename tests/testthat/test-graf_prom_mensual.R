@@ -168,3 +168,11 @@ test_that("da error si la fecha no es texto ni fecha", {
   datos <- data.frame(fecha = c(20200115, 20200215), temp = c(20, 22))
   expect_error(graf_prom_mensual(datos, variable = "temp"), "tipo fecha")
 })
+test_that("ignora las filas sin fecha y avisa cuantas son", {
+  datos <- data.frame(fecha = as.Date(c("2020-01-15", NA)), temp = c(20, 22))
+
+  expect_message(graf_prom_mensual(datos, variable = "temp"), "Se ignoraron 1 fila")
+
+  p <- suppressMessages(graf_prom_mensual(datos, variable = "temp"))
+  expect_false(any(is.na(p$data$mes)))
+})

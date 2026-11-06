@@ -146,6 +146,13 @@ graf_prom_mensual <- function(datos, variable = "temperatura_abrigo_150cm", por_
   if (!inherits(datos$fecha, c("Date", "POSIXt"))) {
     cli::cli_abort("La columna {.field fecha} tiene que ser de tipo fecha o texto, por ejemplo {.val 1961-07-01}.")
   }
+  #mismo q en leer_datset
+  # las filas sin fecha no tienen mes, asi que las sacamos y avisamos
+  fechas_na <- sum(is.na(datos$fecha))
+  if (fechas_na > 0) {
+    cli::cli_inform("Se ignoraron {fechas_na} fila{?s} con {.field fecha} faltante ({.code NA}).")
+    datos <- datos[!is.na(datos$fecha), ]
+  }
 
   # como en este caso, la variable es un character, pero necesitamos buscar
   # la columna, usamos esta notacion datos[[variable]]

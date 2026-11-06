@@ -100,6 +100,7 @@ leer_dataset <- function(dataset, ruta, url_base = "https://raw.githubuserconten
       "i" = "Revisa que {.arg dataset} y {.arg url_base} sean correctos."
     ))
   }
+
   # ponemos < por <!DOCTYPE>
   if (startsWith(primera_linea, "<")) {
     if (descargado) {

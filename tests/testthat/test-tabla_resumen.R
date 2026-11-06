@@ -186,4 +186,12 @@ test_that("con valores negativos y decimales calcula bien la media", {
   expect_equal(resultado$valor[resultado$estadistico == "media"], -1 / 3)
 })
 
+test_that("ignora las filas sin fecha y avisa cuantas son", {
+  datos <- data.frame(fecha = as.Date(c("2020-01-15", NA)), temp = c(20, 22))
 
+  expect_message(tabla_resumen(datos, variable = "temp"), "Se ignoraron 1 fila")
+
+  resultado <- suppressMessages(tabla_resumen(datos, variable = "temp"))
+  expect_false(any(is.na(resultado$mes)))
+  expect_equal(resultado$valor[resultado$estadistico == "media"], 20)
+})
