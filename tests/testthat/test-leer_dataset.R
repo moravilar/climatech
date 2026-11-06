@@ -80,7 +80,7 @@ test_that("descarga el archivo si no existe y crea la carpeta", {
   skip_on_cran()
   skip_if_offline()
 
-  carpeta <- file.path(tempdir(), "carpeta_nueva")
+  carpeta <- tempfile("carpeta_nueva")
   ruta <- file.path(carpeta, "NH0437.csv")
 
   expect_message(datos <- leer_dataset("NH0437", ruta), "Descargando")
