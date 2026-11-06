@@ -90,5 +90,5 @@ head(datos)
 # si se vuelve a llamar con la misma ruta, se lee el archivo
 # guardado y no se descarga de nuevo
 datos <- leer_dataset("NH0437", ruta = ruta)
-#> El archivo /tmp/RtmpoGQvjU/NH0437.csv ya existe, se lee sin descargar.
+#> El archivo /tmp/RtmplWWwh7/NH0437.csv ya existe, se lee sin descargar.
 ```

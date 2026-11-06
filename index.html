@@ -13,6 +13,7 @@
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Descargar, Resumir y Graficar Datos de Estaciones Meteorologicas">
 <meta name="description" content="Descarga y lee datos de estaciones meteorologicas desde una URL, por defecto datos de estaciones del Instituto Nacional de Tecnologia Agropecuaria (INTA) disponibles en el Sistema de Informacion y Gestion Agrometeorologica (SIGA). Incluye funciones para resumir cualquier variable numerica de una o mas estaciones y para graficar su promedio mensual. Tambien incluye datos de ejemplo para explorar y probar las funciones del paquete.">
 <meta property="og:description" content="Descarga y lee datos de estaciones meteorologicas desde una URL, por defecto datos de estaciones del Instituto Nacional de Tecnologia Agropecuaria (INTA) disponibles en el Sistema de Informacion y Gestion Agrometeorologica (SIGA). Incluye funciones para resumir cualquier variable numerica de una o mas estaciones y para graficar su promedio mensual. Tambien incluye datos de ejemplo para explorar y probar las funciones del paquete.">
+<meta property="og:image" content="https://moravilar.github.io/climatech/logo.png">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -47,10 +48,12 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="climatech">climatech<a class="anchor" aria-label="anchor" href="#climatech"></a>
-</h1></div>
+<div class="page-header">
+<img src="logo.png" class="logo" alt=""><h1 id="climatech-">climatech <a class="anchor" aria-label="anchor" href="#climatech-"></a>
+</h1>
+</div>
 <!-- badges: start -->
-<!-- badges: end -->
+
 <p>climatech permite descargar, resumir y graficar datos de estaciones meteorologicas. Por defecto trabaja con datos de estaciones del Instituto Nacional de Tecnologia Agropecuaria (INTA), disponibles en el Sistema de Informacion y Gestion Agrometeorologica (SIGA).</p>
 <p>Con climatech podes:</p>
 <ul>
@@ -136,6 +139,11 @@
 </div>
 </div>
 <div class="section level2">
+<h2 id="como-contribuir">Como contribuir<a class="anchor" aria-label="anchor" href="#como-contribuir"></a>
+</h2>
+<p>Las contribuciones son bienvenidas.Si encontras un error o tenes una idea para mejorar el paquete, podes abrir un <a href="https://github.com/moravilar/climatech/issues" class="external-link">issue</a>. Si queres proponer un cambio en el codigo, revisa primero la <a href="https://github.com/moravilar/climatech/blob/master/.github/CONTRIBUTING.md" class="external-link">guia de contribucion</a>:ahi explicamos como trabajamos con las ramas <code>master</code> y <code>dev</code>. Este proyecto tiene un <a href="https://moravilar.github.io/climatech/CODE_OF_CONDUCT.html">codigo de conducta</a>. Al participar, aceptas respetarlo. uwu</p>
+</div>
+<div class="section level2">
 <h2 id="autoras">Autoras<a class="anchor" aria-label="anchor" href="#autoras"></a>
 </h2>
 <ul>
@@ -155,10 +163,18 @@
 <div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li>`use_mit_license()`, `use_gpl3_license()` or friends to pick a license</li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
 
+<div class="community">
+<h2 data-toc-skip>Community</h2>
+<ul class="list-unstyled">
+<li><a href="CONTRIBUTING.html">Contributing guide</a></li>
+<li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
+</ul>
+</div>
 
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
@@ -175,7 +191,14 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://app.codecov.io/gh/moravilar/climatech" class="external-link"><img src="https://codecov.io/gh/moravilar/climatech/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/moravilar/climatech/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/moravilar/climatech/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+</ul>
+</div>
 
   </aside>
 </div>
