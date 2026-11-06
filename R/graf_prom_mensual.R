@@ -142,6 +142,10 @@ graf_prom_mensual <- function(datos, variable = "temperatura_abrigo_150cm", por_
     }
     datos$fecha <- fechas
   }
+  # si no era texto ni fecha (por ejemplo, numeros), no podemos sacar el mes
+  if (!inherits(datos$fecha, c("Date", "POSIXt"))) {
+    cli::cli_abort("La columna {.field fecha} tiene que ser de tipo fecha o texto, por ejemplo {.val 1961-07-01}.")
+  }
 
   # como en este caso, la variable es un character, pero necesitamos buscar
   # la columna, usamos esta notacion datos[[variable]]
@@ -160,7 +164,6 @@ graf_prom_mensual <- function(datos, variable = "temperatura_abrigo_150cm", por_
                                 promedio = mean(valor, na.rm = TRUE),
                                 .groups = "drop")
 
-  # una linea por estacion (cada una de un color) o una sola linea
   # una linea por estacion (cada una de un color) o una sola linea
   if (por_estacion) {
     grafico <- ggplot2::ggplot(promedios,

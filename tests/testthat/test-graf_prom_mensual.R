@@ -162,3 +162,9 @@ test_that("las fechas como texto funcionan igual que como fecha", {
 
   expect_equal(p_texto$data, p_fecha$data)
 })
+
+
+test_that("da error si la fecha no es texto ni fecha", {
+  datos <- data.frame(fecha = c(20200115, 20200215), temp = c(20, 22))
+  expect_error(graf_prom_mensual(datos, variable = "temp"), "tipo fecha")
+})
