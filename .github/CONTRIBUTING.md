@@ -1,47 +1,38 @@
-# Contributing to climatech
+# Como contribuir a climatech
 
-This outlines how to propose a change to climatech.
-For a detailed discussion on contributing to this and other tidyverse packages, please see the [development contributing guide](https://rstd.io/tidy-contrib) and our [code review principles](https://code-review.tidyverse.org/).
+Esta guia explica como proponer cambios a climatech. ¡Cualquier ayuda es bienvenida!
 
-## Fixing typos
+## Corregir errores de tipeo
 
-You can fix typos, spelling mistakes, or grammatical errors in the documentation directly using the GitHub web interface, as long as the changes are made in the _source_ file. 
-This generally means you'll need to edit [roxygen2 comments](https://roxygen2.r-lib.org/articles/roxygen2.html) in an `.R`, not a `.Rd` file. 
-You can find the `.R` file that generates the `.Rd` by reading the comment in the first line.
+Podes corregir errores de tipeo u ortografia en la documentacion directamente desde GitHub, siempre que el cambio se haga en el archivo *fuente*.
+Eso significa editar los comentarios de [roxygen2](https://roxygen2.r-lib.org/articles/roxygen2.html) en los archivos `.R` de la carpeta `R/`, y no los archivos `.Rd` de la carpeta `man/`, que se generan automaticamente.
 
-## Bigger changes
+## Cambios mas grandes
 
-If you want to make a bigger change, it's a good idea to first file an issue and make sure someone from the team agrees that it’s needed. 
-If you’ve found a bug, please file an issue that illustrates the bug with a minimal 
-[reprex](https://www.tidyverse.org/help/#reprex) (this will also help you write a unit test, if needed).
-See our guide on [how to create a great issue](https://code-review.tidyverse.org/issues/) for more advice.
+Si queres hacer un cambio mas grande, primero abri un [issue](https://github.com/moravilar/climatech/issues) para charlarlo con nosotras.
+Si encontraste un error, contanos en el issue como reproducirlo con un ejemplo minimo (lo ideal es un [reprex](https://www.tidyverse.org/help/#reprex)): asi tambien es mas facil escribir un test para el caso.
 
-### Pull request process
+### Como trabajamos con las ramas
 
-*   Fork the package and clone onto your computer. If you haven't done this before, we recommend using `usethis::create_from_github("moravilar/climatech", fork = TRUE)`.
+* La rama `master` tiene la version estable del paquete, y desde ahi se publica la pagina web.
+* Los cambios se hacen en la rama `dev`, y cuando estan listos pasan a `master` con un pull request.
+* Por eso, **los pull requests tienen que apuntar a la rama `dev`**, no a `master`.
 
-*   Install all development dependencies with `devtools::install_dev_deps()`, and then make sure the package passes R CMD check by running `devtools::check()`. 
-    If R CMD check doesn't pass cleanly, it's a good idea to ask for help before continuing. 
-*   Create a Git branch for your pull request (PR). We recommend using `usethis::pr_init("brief-description-of-change")`.
+### Pasos para mandar un pull request
 
-*   Make your changes, commit to git, and then create a PR by running `usethis::pr_push()`, and following the prompts in your browser.
-    The title of your PR should briefly describe the change.
-    The body of your PR should contain `Fixes #issue-number`.
+* Hace un fork del repositorio y clonalo en tu computadora, por ejemplo con `usethis::create_from_github("moravilar/climatech", fork = TRUE)`.
+* Pasate a la rama `dev` y crea una rama nueva para tu cambio, por ejemplo con `usethis::pr_init("descripcion-corta-del-cambio")`.
+* Hace tus cambios y revisa que el paquete siga funcionando con `devtools::test()` y `devtools::check()`.
+* Hace commit de los cambios y crea el pull request (por ejemplo con `usethis::pr_push()`).
+  El titulo tiene que describir el cambio, y en la descripcion poné `Closes #` con el numero del issue que resuelve.
 
-*  For user-facing changes, add a bullet to the top of `NEWS.md` (i.e. just below the first header). Follow the style described in <https://style.tidyverse.org/news.html>.
+### Estilo del codigo
 
-### Code style
+* Seguimos la [guia de estilo del tidyverse](https://style.tidyverse.org).
+* Para documentar usamos [roxygen2](https://roxygen2.r-lib.org) con formato Markdown.
+* Para los tests usamos [testthat](https://testthat.r-lib.org). Los cambios que incluyen tests son mas faciles de aceptar.
+* Los mensajes de error y avisos los escribimos con [cli](https://cli.r-lib.org), y sin tildes ni enies para que el paquete pase `R CMD check`.
 
-*   New code should follow the tidyverse [style guide](https://style.tidyverse.org). 
-    You can use [Air](https://posit-dev.github.io/air/) to apply this style, but please don't restyle code that has nothing to do with your PR.  
+## Codigo de conducta
 
-*  We use [roxygen2](https://cran.r-project.org/package=roxygen2), with [Markdown syntax](https://cran.r-project.org/web/packages/roxygen2/vignettes/rd-formatting.html), for documentation.  
-
-*  We use [testthat](https://cran.r-project.org/package=testthat) for unit tests. 
-   Contributions with test cases included are easier to accept.  
-
-## Code of Conduct
-
-Please note that the climatech project is released with a
-[Contributor Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this
-project you agree to abide by its terms.
+Este proyecto tiene un [codigo de conducta](https://github.com/moravilar/climatech/blob/master/CODE_OF_CONDUCT.md). Al participar, aceptas respetarlo.
