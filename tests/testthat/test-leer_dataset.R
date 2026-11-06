@@ -108,11 +108,3 @@ test_that("da error si url_base no termina con /", {
   expect_false(file.exists(ruta))
 })
 
-test_that("da error si url_base no termina con /", {
-  ruta <- tempfile(fileext = ".csv")
-  url_sin_barra <- "https://raw.githubusercontent.com/rse-r/intro-programacion/main/datos"
-
-  expect_error(leer_dataset("NH0437", ruta, url_base = url_sin_barra), "terminar con")
-  # no se tiene que haber intentado la descarga
-  expect_false(file.exists(ruta))
-})
