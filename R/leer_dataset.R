@@ -70,6 +70,10 @@ leer_dataset <- function(dataset, ruta, url_base = "https://raw.githubuserconten
     cli::cli_abort(
       "{.arg url_base} debe empezar con {.val http}.")
   }
+  # la url se arma pegando url_base + dataset, asi que necesitamos la barra final
+  if (!endsWith(url_base, "/")) {
+    cli::cli_abort("{.arg url_base} debe terminar con {.val /}.")
+  }
 
   # guardamos si el archivo se descargo en esta llamada, para borrarlo
   # solo en ese caso (nunca un archivo que ya tenia el usuario)
@@ -96,6 +100,7 @@ leer_dataset <- function(dataset, ruta, url_base = "https://raw.githubuserconten
       "i" = "Revisa que {.arg dataset} y {.arg url_base} sean correctos."
     ))
   }
+
   # ponemos < por <!DOCTYPE>
   if (startsWith(primera_linea, "<")) {
     if (descargado) {

@@ -12,9 +12,8 @@ Description: Descarga y lee datos de estaciones meteorologicas desde una URL,
     variable numerica de una o mas estaciones y para graficar su promedio
     mensual. Tambien incluye datos de ejemplo para explorar y probar las
     funciones del paquete.
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
-Config/roxygen2/version: 8.1.0
+License: MIT + file LICENSE
+Config/roxygen2/version: 8.1.1
 Encoding: UTF-8
 Language: es
 Roxygen: list(markdown = TRUE)
@@ -33,6 +32,9 @@ Depends:
     R (>= 4.1.0)
 LazyData: true
 Suggests: 
+    curl,
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
+Config/testthat/edition: 3
