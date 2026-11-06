@@ -13,7 +13,7 @@ Description: Descarga y lee datos de estaciones meteorologicas desde una URL,
     mensual. Tambien incluye datos de ejemplo para explorar y probar las
     funciones del paquete.
 License: MIT + file LICENSE
-Config/roxygen2/version: 8.1.0
+Config/roxygen2/version: 8.1.1
 Encoding: UTF-8
 Language: es
 Roxygen: list(markdown = TRUE)

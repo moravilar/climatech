@@ -1,5 +1,5 @@
 
-# climatech
+# climatech <img src="man/figures/logo.png" align="right" height="139" alt="logo de climatech" />
 
 <!-- badges: start -->
 
@@ -142,6 +142,18 @@ tabla_resumen(datos_estaciones, variable = "humedad_media_8_14_20",
 Asi la funcion sirve tanto para datos de una sola estacion, que no
 necesitan `id`, como para datos de varias. `graf_prom_mensual()`
 funciona de la misma manera.
+
+## Como contribuir
+
+Las contribuciones son bienvenidas.Si encontras un error o tenes una
+idea para mejorar el paquete, podes abrir un
+[issue](https://github.com/moravilar/climatech/issues). Si queres
+proponer un cambio en el codigo, revisa primero la [guia de
+contribucion](https://github.com/moravilar/climatech/blob/master/.github/CONTRIBUTING.md):ahi
+explicamos como trabajamos con las ramas `master` y `dev`. Este proyecto
+tiene un [codigo de
+conducta](https://moravilar.github.io/climatech/CODE_OF_CONDUCT.html).
+Al participar, aceptas respetarlo. uwu
 
 ## Autoras
 
