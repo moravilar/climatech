@@ -73,5 +73,29 @@ test_that("no convierte en NA una columna que empieza con muchos vacios", {
   datos <- suppressMessages(leer_dataset("NH0437", ruta))
 
   expect_true(is.numeric(datos$humedad))
-  expect_equal(datos$humedad[1501], 85.5)
-})
+  expect_equal(datos$humedad[1501], 85.5) })
+# test con internet, se saltean si no hay conexion o si corren en cran
+
+test_that("descarga el archivo si no existe y crea la carpeta", {
+  skip_on_cran()
+  skip_if_offline()
+
+  carpeta <- file.path(tempdir(), "carpeta_nueva")
+  ruta <- file.path(carpeta, "NH0437.csv")
+
+  expect_message(datos <- leer_dataset("NH0437", ruta), "Descargando")
+  expect_true(file.exists(ruta))
+  expect_true(nrow(datos) > 0)
+  expect_true("fecha" %in% names(datos)) })
+
+test_that("si el archivo existe pero esta vacio lo vuelve a descargar", {
+  skip_on_cran()
+  skip_if_offline()
+
+  ruta <- tempfile(fileext = ".csv")
+  file.create(ruta)
+
+  expect_message(datos <- leer_dataset("NH0437", ruta), "Descargando")
+  expect_true(nrow(datos) > 0) })
+
+
